@@ -35,13 +35,13 @@ app.get('/api/tasks/:id', async (req, res) => {
   }
 });
 
-// Create a task
+//Create a task
 app.post('/api/tasks', async (req, res) => {
   try {
-    const { title, description, due_date } = req.body;
+    const { title, description, due_date, category } = req.body;
     const newTask = await pool.query(
-      'INSERT INTO tasks (title, description, due_date) VALUES ($1, $2, $3) RETURNING *',
-      [title, description, due_date || null]
+      'INSERT INTO tasks (title, description, due_date, category) VALUES ($1, $2, $3, $4) RETURNING *',
+      [title, description, due_date || null, category || 'General']
     );
     res.json(newTask.rows[0]);
   } catch (err) {
@@ -53,10 +53,10 @@ app.post('/api/tasks', async (req, res) => {
 // // Create a task
 // app.post('/api/tasks', async (req, res) => {
 //   try {
-//     const { title, description } = req.body;
+//     const { title, description, due_date } = req.body;
 //     const newTask = await pool.query(
-//       'INSERT INTO tasks (title, description) VALUES ($1, $2) RETURNING *',
-//       [title, description]
+//       'INSERT INTO tasks (title, description, due_date) VALUES ($1, $2, $3) RETURNING *',
+//       [title, description, due_date || null]
 //     );
 //     res.json(newTask.rows[0]);
 //   } catch (err) {
@@ -65,14 +65,14 @@ app.post('/api/tasks', async (req, res) => {
 //   }
 // });
 
-// Update a task
+//Update a task
 app.put('/api/tasks/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, completed, due_date } = req.body;
+    const { title, description, completed, due_date, category } = req.body;
     const updateTask = await pool.query(
-      'UPDATE tasks SET title = $1, description = $2, completed = $3, due_date = $4 WHERE id = $5 RETURNING *',
-      [title, description, completed, due_date, id]
+      'UPDATE tasks SET title = $1, description = $2, completed = $3, due_date = $4, category = $5 WHERE id = $6 RETURNING *',
+      [title, description, completed, due_date, category, id]
     );
     res.json(updateTask.rows[0]);
   } catch (err) {
@@ -85,10 +85,10 @@ app.put('/api/tasks/:id', async (req, res) => {
 // app.put('/api/tasks/:id', async (req, res) => {
 //   try {
 //     const { id } = req.params;
-//     const { title, description, completed } = req.body;
+//     const { title, description, completed, due_date } = req.body;
 //     const updateTask = await pool.query(
-//       'UPDATE tasks SET title = $1, description = $2, completed = $3 WHERE id = $4 RETURNING *',
-//       [title, description, completed, id]
+//       'UPDATE tasks SET title = $1, description = $2, completed = $3, due_date = $4 WHERE id = $5 RETURNING *',
+//       [title, description, completed, due_date, id]
 //     );
 //     res.json(updateTask.rows[0]);
 //   } catch (err) {
