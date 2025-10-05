@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors');
 const pool = require('./db');
@@ -35,7 +36,7 @@ app.get('/api/tasks/:id', async (req, res) => {
   }
 });
 
-//Create a task
+// Create a task
 app.post('/api/tasks', async (req, res) => {
   try {
     const { title, description, due_date, category } = req.body;
@@ -50,22 +51,7 @@ app.post('/api/tasks', async (req, res) => {
   }
 });
 
-// // Create a task
-// app.post('/api/tasks', async (req, res) => {
-//   try {
-//     const { title, description, due_date } = req.body;
-//     const newTask = await pool.query(
-//       'INSERT INTO tasks (title, description, due_date) VALUES ($1, $2, $3) RETURNING *',
-//       [title, description, due_date || null]
-//     );
-//     res.json(newTask.rows[0]);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
-
-//Update a task
+// Update a task
 app.put('/api/tasks/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -80,22 +66,6 @@ app.put('/api/tasks/:id', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
-// // Update a task
-// app.put('/api/tasks/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { title, description, completed, due_date } = req.body;
-//     const updateTask = await pool.query(
-//       'UPDATE tasks SET title = $1, description = $2, completed = $3, due_date = $4 WHERE id = $5 RETURNING *',
-//       [title, description, completed, due_date, id]
-//     );
-//     res.json(updateTask.rows[0]);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
 
 // Delete a task
 app.delete('/api/tasks/:id', async (req, res) => {
